@@ -39,15 +39,46 @@
         let px = sx + 200;
         let py = sy;
 
-        ctx.beginPath();
-        ctx.arc(sx, sy, 50, 0, Math.PI*2);
-        ctx.fillStyle = "#000000";
-        ctx.fill();
+        let v_px = 0;
+        let v_py = 2;
 
-        ctx.beginPath();
-        ctx.arc(px, py, 20, 0, Math.PI*2);
-        ctx.fillStyle = "#CED562";
-        ctx.fill();
+        const s_gravity = 1200;
+
+        function doAnimate(){
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+
+            let distance_px = sx-px;
+            let distance_py = sy-py;
+            let distance = Math.sqrt(Math.pow(distance_px,2)+Math.pow(distance_py,2));
+
+            if(distance > 10){
+                let force = s_gravity / Math.pow(distance,2);
+                let a_px = (distance_px / distance) * force;
+                let a_py = (distance_py / distance) * force;
+
+                v_px+=a_px;
+                v_py+=a_py;
+            }
+
+            px+=v_px;
+            py+=v_py;
+
+            ctx.beginPath();
+            ctx.arc(sx, sy, 50, 0, Math.PI * 2);
+            ctx.fillStyle = "#000000";
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(px, py, 20, 0, Math.PI * 2);
+            ctx.fillStyle = "#CED562";
+            ctx.fill();
+
+            requestAnimationFrame(doAnimate);
+        }
+
+        doAnimate();
+
+
 
 
     </script>
