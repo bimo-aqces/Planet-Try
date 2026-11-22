@@ -36,9 +36,17 @@
         let sx = canvas.width / 2;
         let sy = canvas.height / 2;
 
+        let px = sx + 200;
+        let py = sy;
+
         ctx.beginPath();
         ctx.arc(sx, sy, 50, 0, Math.PI*2);
         ctx.fillStyle = "#000000";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(px, py, 20, 0, Math.PI*2);
+        ctx.fillStyle = "#CED562";
         ctx.fill();
 
 
