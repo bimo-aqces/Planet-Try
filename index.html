@@ -39,7 +39,7 @@
         let v_px; 
         let v_py;
 
-        const s_gravity = 1000;
+        const s_gravity = 1200;
 
         const planets = [];
 
@@ -47,17 +47,22 @@
             const click_px = e.clientX;
             const click_py = e.clientY;
 
-            const distance_px = sx-px;
-            const distance_py = sy-py;
+            const distance_px = sx-click_px;
+            const distance_py = sy-click_py;
             const distance = Math.sqrt(Math.pow(distance_px,2)+Math.pow(distance_py,2));
+
+            const speed = Math.sqrt(s_gravity / distance);
+            const v_px = (-distance_py / distance) * speed;
+            const v_py = (distance_px / distance) * speed;
 
             planets.push({
                 px: click_px,
                 py: click_py,
-                v_px: 0,
-                v_py: 2,
+                v_px: v_px,
+                v_py: v_py,
                 radius: 16,
-                color: "#62D58E"
+                color: "#62D58E",
+                orbit: []
             });
         })
 
@@ -80,6 +85,21 @@
 
                 p.px += p.v_px;
                 p.py += p.v_py;
+
+                p.orbit.push({x: p.px, y: p.py});
+                if(p.orbit.length > 1500){
+                    p.orbit.shift();
+                }
+
+                if(p.orbit.length > 1){
+                    ctx.moveTo(p.orbit[0].x, p.orbit[0].y);
+                    for(let i = 1; i < p.orbit.length; i++){
+                        ctx.lineTo(p.orbit[i].x, p.orbit[i].y);
+                    }
+                    ctx.strokeStyle = "#62D58E";
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
 
                 ctx.beginPath();
                 ctx.arc(p.px, p.py, 20, 0, Math.PI * 2);
