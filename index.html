@@ -33,50 +33,69 @@
         let sx = canvas.width / 2;
         let sy = canvas.height / 2;
 
-        let px = sx + 200;
-        let py = sy;
+        let px; 
+        let py;
 
-        let v_px = 0;
-        let v_py = 2;
+        let v_px; 
+        let v_py;
 
-        const s_gravity = 1200;
+        const s_gravity = 1000;
+
+        const planets = [];
+
+        canvas.addEventListener("click", e =>{
+            const click_px = e.clientX;
+            const click_py = e.clientY;
+
+            const distance_px = sx-px;
+            const distance_py = sy-py;
+            const distance = Math.sqrt(Math.pow(distance_px,2)+Math.pow(distance_py,2));
+
+            planets.push({
+                px: click_px,
+                py: click_py,
+                v_px: 0,
+                v_py: 2,
+                radius: 16,
+                color: "#62D58E"
+            });
+        })
 
         function doAnimate(){
             ctx.clearRect(0,0,canvas.width, canvas.height);
+            
+            planets.forEach(p=>{
+                let distance_px = sx - p.px;
+                let distance_py = sy - p.py;
+                let distance = Math.sqrt(Math.pow(distance_px, 2) + Math.pow(distance_py, 2));
 
-            let distance_px = sx-px;
-            let distance_py = sy-py;
-            let distance = Math.sqrt(Math.pow(distance_px,2)+Math.pow(distance_py,2));
+                if (distance > 10) {
+                    let force = s_gravity / Math.pow(distance, 2);
+                    let a_px = (distance_px / distance) * force;
+                    let a_py = (distance_py / distance) * force;
 
-            if(distance > 10){
-                let force = s_gravity / Math.pow(distance,2);
-                let a_px = (distance_px / distance) * force;
-                let a_py = (distance_py / distance) * force;
+                    p.v_px += a_px;
+                    p.v_py += a_py;
+                }
 
-                v_px+=a_px;
-                v_py+=a_py;
-            }
+                p.px += p.v_px;
+                p.py += p.v_py;
 
-            px+=v_px;
-            py+=v_py;
+                ctx.beginPath();
+                ctx.arc(p.px, p.py, 20, 0, Math.PI * 2);
+                ctx.fillStyle = "#CED562";
+                ctx.fill();
+            })
 
             ctx.beginPath();
             ctx.arc(sx, sy, 50, 0, Math.PI * 2);
             ctx.fillStyle = "#000000";
             ctx.fill();
 
-            ctx.beginPath();
-            ctx.arc(px, py, 20, 0, Math.PI * 2);
-            ctx.fillStyle = "#CED562";
-            ctx.fill();
-
             requestAnimationFrame(doAnimate);
         }
 
         doAnimate();
-
-
-
 
     </script>
 </body>
