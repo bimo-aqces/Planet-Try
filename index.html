@@ -25,13 +25,10 @@
         const canvas = document.getElementById("myCanvas");
         const ctx = canvas.getContext("2d");
 
-        function refreshPage(){
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         
-        refreshPage();
-        window.addEventListener("resize", () => {refreshPage(), location.reload()});
+        window.addEventListener("resize", () => {location.reload()});
 
         let sx = canvas.width / 2;
         let sy = canvas.height / 2;
