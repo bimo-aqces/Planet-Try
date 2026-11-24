@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,12 @@
 
     <style>
         body {
-            background-color: aquamarine;
+            background-color: #261ca8;
             color: black;
             margin: 0;
         }
 
-        canvas{
+        canvas {
             display: block;
         }
     </style>
@@ -20,36 +21,36 @@
 
 <body>
     <canvas id="myCanvas"></canvas>
-    
+
     <script>
         const canvas = document.getElementById("myCanvas");
         const ctx = canvas.getContext("2d");
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        
-        window.addEventListener("resize", () => {location.reload()});
+
+        window.addEventListener("resize", () => { location.reload() });
 
         let sx = canvas.width / 2;
         let sy = canvas.height / 2;
 
-        let px; 
+        let px;
         let py;
 
-        let v_px; 
+        let v_px;
         let v_py;
 
         const s_gravity = 1200;
 
         const planets = [];
 
-        canvas.addEventListener("click", e =>{
+        canvas.addEventListener("click", e => {
             const click_px = e.clientX;
             const click_py = e.clientY;
 
-            const distance_px = sx-click_px;
-            const distance_py = sy-click_py;
-            const distance = Math.sqrt(Math.pow(distance_px,2)+Math.pow(distance_py,2));
+            const distance_px = sx - click_px;
+            const distance_py = sy - click_py;
+            const distance = Math.sqrt(Math.pow(distance_px, 2) + Math.pow(distance_py, 2));
 
             const speed = Math.sqrt(s_gravity / distance);
             const v_px = (-distance_py / distance) * speed;
@@ -66,10 +67,10 @@
             });
         })
 
-        function doAnimate(){
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            
-            planets.forEach(p=>{
+        function doAnimate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            planets.forEach(p => {
                 let distance_px = sx - p.px;
                 let distance_py = sy - p.py;
                 let distance = Math.sqrt(Math.pow(distance_px, 2) + Math.pow(distance_py, 2));
@@ -86,16 +87,18 @@
                 p.px += p.v_px;
                 p.py += p.v_py;
 
-                p.orbit.push({x: p.px, y: p.py});
-                if(p.orbit.length > 1500){
+                p.orbit.push({ x: p.px, y: p.py });
+                if (p.orbit.length > 1500) {
                     p.orbit.shift();
                 }
 
-                if(p.orbit.length > 1){
+                if (p.orbit.length > 1) {
                     ctx.moveTo(p.orbit[0].x, p.orbit[0].y);
-                    for(let i = 1; i < p.orbit.length; i++){
+                    for (let i = 1; i < p.orbit.length; i++) {
                         ctx.lineTo(p.orbit[i].x, p.orbit[i].y);
                     }
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = "#62D58E"; 
                     ctx.strokeStyle = "#62D58E";
                     ctx.lineWidth = 2;
                     ctx.stroke();
@@ -103,12 +106,16 @@
 
                 ctx.beginPath();
                 ctx.arc(p.px, p.py, 20, 0, Math.PI * 2);
+                ctx.shadowBlur = 30;
+                ctx.shadowColor = "#CED562";
                 ctx.fillStyle = "#CED562";
                 ctx.fill();
             })
 
             ctx.beginPath();
             ctx.arc(sx, sy, 50, 0, Math.PI * 2);
+            ctx.shadowBlur = 100;
+            ctx.shadowColor = "#ff8c00"; 
             ctx.fillStyle = "#000000";
             ctx.fill();
 
@@ -119,4 +126,5 @@
 
     </script>
 </body>
+
 </html>
